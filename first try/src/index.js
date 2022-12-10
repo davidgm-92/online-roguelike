@@ -1,32 +1,26 @@
+canvas = document.getElementById("canvas");
+ctx = canvas.getContext("2d");
+ctx.width = 600;
+ctx.height = 300;
+tileSize = 64;
 
-MAP_WIDTH = 30;
-MAP_HEIGHT = 10;
-MAP_TILE_FLOOR = "#";
-
-
-function GenerateMap (width, height) {
-    let map = [];
-    for (let y = 0; y < height; y++) {
-        map.push([]);
-        for (let x = 0; x < width; x++) {
-            map[y].push([]);
-            map[y][x] = MAP_TILE_FLOOR;
-        }
-    }
-    return map;
+function drawSprite(sprite, x, y) {
+    ctx.drawImage(
+        spritesheet,
+        sprite*16,
+        0,
+        16,
+        16,
+        x*tileSize,
+        y*tileSize,
+        tileSize,
+        tileSize
+    );
 }
 
-function DrawMap (map) {
-    let canvas ="";
-    for (let x = 0; x < map.length; x++) {
-        for (let y = 0; y < map[x].length; y++) {
-            canvas = canvas + `${map[x][y]}`;
-        }
-        canvas = canvas + `<br>`;
-    }
-    return canvas;
-}
+spritesheet = new Image();
+spritesheet.src = "spritesheet.png";
 
-var canvas = document.getElementById("canvas");
-var map = GenerateMap(MAP_WIDTH, MAP_HEIGHT);
-canvas.innerHTML = DrawMap(map);
+ctx.clearRect(0,0,canvas.width,canvas.height);
+drawSprite(0,0,0);
+ctx.fillRect(100,0,10,10);
