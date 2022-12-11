@@ -1,9 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 canvas {
     outline: 1px solid white;
+    margin: 10px;
 }
 
 body {
-    background-color: indigo;
+    background-color: rgb(29, 0, 32);
     text-align: center;
     margin-top: 50px;
 }
