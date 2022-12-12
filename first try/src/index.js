@@ -109,9 +109,9 @@ spawnAll(charList);
 
 document.querySelector("html").onkeypress = function(e){
     if (e.key=="w" && charList[0].y-1 >=0 && (map[charList[0].x][charList[0].y-1].passable)) charList[0].y--;
-    if (e.key=="s" && charList[0].y+1 <=7 && (map[charList[0].x][charList[0].y+1].passable)) charList[0].y++;
+    if (e.key=="s" && charList[0].y+1 <=(mapSize-1) && (map[charList[0].x][charList[0].y+1].passable)) charList[0].y++;
     if (e.key=="a" && charList[0].x-1 >=0 && (map[charList[0].x-1][charList[0].y].passable)) charList[0].x--;
-    if (e.key=="d" && charList[0].x+1 <=7 && (map[charList[0].x+1][charList[0].y].passable)) charList[0].x++;
+    if (e.key=="d" && charList[0].x+1 <=(mapSize-1) && (map[charList[0].x+1][charList[0].y].passable)) charList[0].x++;
 };
 
 setInterval(drawAll, 10, map, charList);
