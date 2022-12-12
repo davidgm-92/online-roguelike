@@ -17,13 +17,31 @@ function Tile(type, sprite, x, y, passable) {
     }
 }
 
-function Char(type, sprite, x, y) {
+function Char(type, sprite) {
     this.type = type;
     this.sprite = sprite;
-    this.x = x;
-    this.y = y;
+    this.x = undefined;
+    this.y = undefined;
     this.draw = function () {
         drawSprite(this.sprite, this.x, this.y);
+    }
+    this.spawn = function() {
+        let spawnValid = false;
+        let conflict = false;
+        do {
+            let spawnX = Math.floor(Math.random()*(mapSize));
+            let spawnY = Math.floor(Math.random()*(mapSize));
+            if (map[spawnX][spawnY].passable == true) {
+                for (i in charList) {
+                    if (charList[i].x == spawnX && charList[i].y == spawnY) conflict = true;
+                }
+                if (!conflict) {
+                    this.x = spawnX;
+                    this.y = spawnY;
+                    spawnValid = true;
+                }
+            }
+        } while (spawnValid == false);
     }
 }
 
@@ -67,21 +85,33 @@ function drawAll(map, charList) {
     }
 }
 
+function spawnAll(charList) {
+    let player = new Char("player", 0);
+    charList.push(player);
+    numEnemies = Math.floor(1+Math.random()*5);
+    for (i=0; i<numEnemies; i++) {
+        let orc = new Char("orc", 4);
+        charList.push(orc);
+    }
+    for (i in charList) {
+        charList[i].spawn();
+    }
+}
+
 spritesheet = new Image();
 spritesheet.src = "spritesheet.png";
 
 ctx.clearRect(0,0,canvas.width,canvas.height);
 let map = createMap();
-
-let player = new Char("player", 0, 0, 0);
 let charList = [];
-charList.push(player);
+
+spawnAll(charList);
 
 document.querySelector("html").onkeypress = function(e){
-    if (e.key=="w") player.y--;
-    if (e.key=="s") player.y++;
-    if (e.key=="a") player.x--;
-    if (e.key=="d") player.x++;
+    if (e.key=="w" && charList[0].y-1 >=0 && (map[charList[0].x][charList[0].y-1].passable)) charList[0].y--;
+    if (e.key=="s" && charList[0].y+1 <=7 && (map[charList[0].x][charList[0].y+1].passable)) charList[0].y++;
+    if (e.key=="a" && charList[0].x-1 >=0 && (map[charList[0].x-1][charList[0].y].passable)) charList[0].x--;
+    if (e.key=="d" && charList[0].x+1 <=7 && (map[charList[0].x+1][charList[0].y].passable)) charList[0].x++;
 };
 
 setInterval(drawAll, 10, map, charList);
